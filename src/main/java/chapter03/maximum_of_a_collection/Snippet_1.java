@@ -1,12 +1,17 @@
 package chapter03.maximum_of_a_collection;
-// ch03_2_4
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+// ch03_2_1
+import java.util.Collection;
+import java.util.Iterator;
 
 public class Snippet_1 {
-	public static void main(String[] args) {
-		List<Number> nums = Arrays.asList(0,1,2,3.14);
-		assert Collections.max(nums) == 3.14; // compile-time error
-	}
+	public static <T extends Comparable<T>> T max(Collection<T> coll) {
+	    Iterator<? extends T> i = coll.iterator();
+	    T candidate = i.next();
+	    while (i.hasNext()) {
+	        T next = i.next();
+	        if (next.compareTo(candidate) > 0)
+	            candidate = next;
+	    }
+	    return candidate;
+	} 
 }
