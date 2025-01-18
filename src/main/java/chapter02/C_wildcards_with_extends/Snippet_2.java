@@ -1,4 +1,4 @@
-package chapter02.B_wildcards_with_extends;
+package chapter02.C_wildcards_with_extends;
 // ch02_2_2
 import java.util.List;
 import java.util.ArrayList;

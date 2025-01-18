@@ -1,4 +1,4 @@
-package chapter02.G_wildcard_capture;
+package chapter02.H_wildcard_capture;
 // ch02_7_2
 import java.util.ArrayList;
 import java.util.List;

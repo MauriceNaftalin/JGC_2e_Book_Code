@@ -1,4 +1,4 @@
-package chapter02.D_the_get_and_put_principle;
+package chapter02.E_the_get_and_put_principle;
 // ch02_4_3
 import java.util.List;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package chapter02.H_restrictions_on_wildcards;
+package chapter02.I_restrictions_on_wildcards;
 // ch02_8_4
 import java.util.List;
 import java.util.ArrayList;

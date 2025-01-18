@@ -1,4 +1,4 @@
-package chapter02.E_arrays;
+package chapter02.F_arrays;
 // ch02_5_3
 import java.util.Arrays;
 import java.util.List;

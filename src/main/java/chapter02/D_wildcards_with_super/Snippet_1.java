@@ -1,4 +1,4 @@
-package chapter02.C_wildcards_with_super;
+package chapter02.D_wildcards_with_super;
 // ch02_3_1
 import java.util.List;
 import java.util.stream.Stream;

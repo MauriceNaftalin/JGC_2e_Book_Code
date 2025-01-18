@@ -1,4 +1,4 @@
-package chapter02.F_wildcards_versus_type_parameters;
+package chapter02.G_wildcards_versus_type_parameters;
 // ch02_6_2
 import java.util.List;
 
