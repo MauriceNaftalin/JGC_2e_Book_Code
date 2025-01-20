@@ -1,8 +1,6 @@
 package chapter06.D_a_generic_reflection_library;
-// ch07_4_2
+// ch07_4_3
 import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Snippet_2 {
 	public static <T> T[] toArray(Collection<T> c, T[] a) {
