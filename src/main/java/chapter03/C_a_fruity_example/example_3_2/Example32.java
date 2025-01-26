@@ -12,13 +12,13 @@ abstract class Fruit implements Comparable<Fruit> {
     this.name = name; this.size = size;
   }
   public boolean equals(Object o) {
-    if (o instanceof Fruit) {
-      Fruit that = (Fruit)o;
+    if (o == null) return false;
+    if (o instanceof Fruit that) {
       return this.name.equals(that.name) && this.size == that.size;
     } else return false;
   }
   public int hashCode() {
-    return Objects.hash(name,size);
+    return Objects.hash(name, size);
   }
   public int compareTo(Fruit that) {
     return Integer.compare(this.size, that.size);
@@ -34,11 +34,11 @@ class Test {
   public static void main(String[] args) {
     Apple a1 = new Apple(1); Apple a2 = new Apple(2);
     Orange o3 = new Orange(3); Orange o4 = new Orange(4);
-    List<Apple> apples = Arrays.asList(a1,a2);
+    List<Apple> apples = Arrays.asList(a1, a2);
     assert Collections.max(apples).equals(a2);
-    List<Orange> oranges = Arrays.asList(o3,o4);
+    List<Orange> oranges = Arrays.asList(o3, o4);
     assert Collections.max(oranges).equals(o4);
-    List<Fruit> mixed = List.of(a1,o3);
+    List<Fruit> mixed = List.of(a1, o3);
     assert Collections.max(mixed).equals(o3); // ok
   }
 

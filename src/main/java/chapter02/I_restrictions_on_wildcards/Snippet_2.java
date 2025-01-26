@@ -8,8 +8,8 @@ public class Snippet_2 {
 		List<Number> nums = new ArrayList<Number>();
 		List<? super Number> sink = nums;
 		List<? extends Number> source = nums;
-		for (int i=0; i<4; i++) sink.add(i);
-		int sum = nums.stream().mapToInt(Number::intValue).sum();
-		assert sum == 6;
+		for (int i=0; i<5; i++) sink.add(i);
+		int sum = source.stream().mapToInt(Number::intValue).sum();
+		assert sum == 10;
 	}
 }

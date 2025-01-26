@@ -13,20 +13,20 @@ public class Snippet_6 {
 		Person b23 = new Person("Bob", 23);
 		List<Person> l = new ArrayList<>(List.of(a32, b23));
 		l.sort(compareByName);
-		assert l.equals(List.of(a32,b23));
+		assert l.equals(List.of(a32, b23));
 		Comparator<Person> compareByAge = Comparator.comparingInt(Person::age);
 		l.sort(compareByAge);
-		assert l.equals(List.of(b23,a32));
+		assert l.equals(List.of(b23, a32));
 		l.sort(compareByAge.reversed());
-		assert l.equals(List.of(a32,b23));
+		assert l.equals(List.of(a32, b23));
 		Person a23 = new Person("Alice", 23);
 		l.add(a23);
 		l.sort(compareByName.thenComparing(compareByAge));
-		assert l.equals(List.of(a23,a32,b23));
+		assert l.equals(List.of(a23, a32, b23));
 		l.sort(compareByAge.reversed().thenComparing(compareByName.reversed()));
-		assert l.equals(List.of(a32,b23,a23));
+		assert l.equals(List.of(a32, b23, a23));
 		l.add(null);
 		l.sort(Comparator.nullsFirst(compareByAge));
-		assert l.equals(Arrays.asList(null,b23,a23,a32));
+		assert l.equals(Arrays.asList(null, b23, a23, a32));
 	}
 }

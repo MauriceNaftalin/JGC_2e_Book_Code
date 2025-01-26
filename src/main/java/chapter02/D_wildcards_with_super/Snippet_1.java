@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import java.util.Collections;
 
 public class Snippet_1 {
-	public static <T> void copy(List<? super T> dst, List<? extends T> src) {
+	public static <T> void copy(List<? super T> dest, List<? extends T> src) {
 	  for (int i = 0; i < src.size(); i++) {
-	    dst.set(i, src.get(i));
+	    dest.set(i, src.get(i));
 	  }
 	}
 	public static void main(String[] args)  {

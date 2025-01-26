@@ -7,6 +7,6 @@ public class Snippet_1 {
 	public static void main(String[] args)  {
 		List<Integer> ints = new ArrayList<Integer>();
 		ints.add(1);
-		int n = ints.get(0);
+		int n = ints.getFirst();
 	}
 }

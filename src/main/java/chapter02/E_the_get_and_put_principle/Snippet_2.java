@@ -16,17 +16,18 @@ public class Snippet_2 {
 	  return sum(nums);
 	}
 	public static void main(String[] args)  {
-		List<Integer> ints = List.of(1,2,3);
+		List<Integer> ints = List.of(1, 2, 3);
 		assert sum(ints) == 6.0;
-		List<Double> doubles = List.of(2.5,3.5);
+		List<Double> doubles = List.of(2.5, 3.5);
 		assert sum(doubles) == 6.0;
-		List<Number> nums = List.of(1,2,2.5,3.5);
+		List<Number> nums = List.of(1, 2, 2.5, 3.5);
 		assert sum(nums) == 9.0;
 		List<Integer> ints1 = new ArrayList<>();
 		storeIntegers(ints1, 5);
 		assert ints1.equals(List.of(0, 1, 2, 3, 4));
 		List<Number> nums1 = new ArrayList<>();
-		storeIntegers(nums1, 5); nums1.add(5.0);
+		storeIntegers(nums1, 5);
+		nums1.add(5.0);
 		assert nums1.equals(List.of(0, 1, 2, 3, 4, 5.0));
 		List<Object> objs1 = new ArrayList<>();
 		storeIntegers(objs1, 5); objs1.add("five");

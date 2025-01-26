@@ -13,7 +13,8 @@ public class Snippet_4 {
 		objs.add(1);
 		objs.add("two");
 		List<? super Integer> ints = objs;
-		ints.add(3);             // ok
-		double dbl = sum(ints);  // compile-time error
+		ints.add(3);             // ok                        
+		double dbl = sum(ints);  // compile-time error        
+		ints.add("three");       // compile-time error        
 	}
 }

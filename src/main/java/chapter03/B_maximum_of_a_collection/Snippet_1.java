@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class Snippet_1 {
-	public static <T extends Comparable<T>> T max(Collection<T> coll) {
+	public static <T extends Comparable<T>> T max(Collection<T> coll) { 
 	    Iterator<? extends T> i = coll.iterator();
 	    T candidate = i.next();
 	    while (i.hasNext()) {

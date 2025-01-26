@@ -7,9 +7,9 @@ class Lists {
   public static <T> List<T> factory() { return new ArrayList<T>(); }
 
 	public static void main(String[] args)  {
-		List<?> list = Lists.factory();
-		List<?> list = Lists.<Object>factory();
-		List<?> list = Lists.<?>factory();  // compile-time error
-		List<List<?>> list = Lists.<List<?>>factory();  // ok
+		List<?> list1 = Lists.factory();
+		List<?> list2 = Lists.<Object>factory();
+		List<?> list3 = Lists.<?>factory();  // compile-time error
+		List<List<?>> list4 = Lists.<List<?>>factory();  // ok
 	}
 }
