@@ -3,6 +3,7 @@ package chapter05.H_how_to_define_arraylist;
 import java.lang.reflect.Array;
 
 public class Arrays {
+    // ...
     @SuppressWarnings("unchecked")
     public static <T> T[] copyOf(T[] original, int newLength) {
         return (T[]) copyOf(original, newLength, original.getClass());
@@ -13,5 +14,6 @@ public class Arrays {
         System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
         return copy;
     }
+    // ...
 
 }

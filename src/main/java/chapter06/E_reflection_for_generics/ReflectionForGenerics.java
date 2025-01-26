@@ -1,7 +1,6 @@
 package chapter06.E_reflection_for_generics;
 // ch07_5_1
 
-import java.lang.reflect.*;
 class ReflectionForGenerics {
     public static void toString(Class<?> k) {
         System.out.println(k + " (toString)");

@@ -18,5 +18,6 @@ abstract class AbstractList_1<E> extends AbstractCollection<E> implements List<E
       }
       return !(it1.hasNext() || it2.hasNext());
   }
+  // ...
 
 }

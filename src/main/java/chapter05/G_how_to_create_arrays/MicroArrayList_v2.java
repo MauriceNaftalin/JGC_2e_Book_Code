@@ -6,6 +6,7 @@ import java.util.Arrays;
 class MicroArrayList_v2<E> {
     private int size = 2;                   // test data
     private Object[] data = {"a", "b"};     // test data
+    // ...
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(Class<T> clazz) {
         T[] a = (T[])Array.newInstance(clazz, size); // 1
