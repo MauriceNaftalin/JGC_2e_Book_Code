@@ -3,7 +3,7 @@ package chapter09.A_iterable_and_iterators;
 import java.util.Iterator;
 
 class Counter implements Iterable<Integer> {
-  private int count;
+  private final int count;
   public Counter(int count) { this.count = count; }
   public Iterator<Integer> iterator() {
     return new Iterator<Integer>() {

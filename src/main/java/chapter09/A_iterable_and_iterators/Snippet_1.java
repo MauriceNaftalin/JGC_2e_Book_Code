@@ -8,7 +8,7 @@ public class Snippet_1 {
 		List<String> strings = new ArrayList<>(List.of("alpha", "bravo", "charlie"));
 		for (String s : strings) {
 		    if (! s.contains("r")) {
-		        strings.remove(s);
+		        strings.remove(s);      // throws ConcurrentModificationException
 		    }
 		}
 	}

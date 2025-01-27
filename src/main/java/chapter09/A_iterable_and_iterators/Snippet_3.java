@@ -9,7 +9,7 @@ public class Snippet_3 {
 		List<String> strings = new ArrayList<>(List.of("alpha", "bravo", "charlie"));
 		List<String> modifiedStrings = strings.stream()
 		    .filter(s -> s.contains("r"))
-		    .collect(Collectors.toList());
+		    .toList();
 		assert modifiedStrings.equals(new ArrayList<>(List.of("bravo", "charlie")));
 	}
 }
