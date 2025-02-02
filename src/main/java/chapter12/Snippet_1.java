@@ -1,12 +1,14 @@
-package chapter10.A_using_the_methods_of_collection;
-// 12a5
+package chapter12;
+// 13a1
+import chapter10.A_using_the_methods_of_collection.Task;
+import chapter10.A_using_the_methods_of_collection.CodingTask;
+import chapter10.A_using_the_methods_of_collection.PhoneTask;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
-import java.util.Iterator;
 
-public class Snippet_2 {
+public class Snippet_1 {
 	public static void main(String[] args)  {
 		PhoneTask mikePhone = new PhoneTask("Mike", "987 6543");
 		PhoneTask paulPhone = new PhoneTask("Paul", "123 4567");
@@ -25,12 +27,8 @@ public class Snippet_2 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
-		// throws ConcurrentModificationException
-		for (Iterator<Task> it = tuesdayTasks.iterator() ; it.hasNext() ; ) {
-		  Task t = it.next();
-		  if (t instanceof PhoneTask) {
-		    tuesdayTasks.remove(t);
-		  }
-		}
+		Set<Task> phoneAndMondayTasks = new HashSet<>(mondayTasks);
+		phoneAndMondayTasks.addAll(phoneTasks);
+		assert phoneAndMondayTasks.equals(Set.of(logicCode, mikePhone, paulPhone));
 	}
 }

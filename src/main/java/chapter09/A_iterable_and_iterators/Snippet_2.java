@@ -13,6 +13,6 @@ public class Snippet_2 {
 		        itr.remove();
 		    }
 		}
-		assert strings.equals(new ArrayList<>(List.of("bravo", "charlie")));
+		assert strings.equals(List.of("bravo", "charlie"));
 	}
 }

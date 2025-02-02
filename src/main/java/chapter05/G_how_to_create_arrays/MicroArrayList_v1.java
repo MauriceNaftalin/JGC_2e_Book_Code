@@ -9,7 +9,7 @@ class MicroArrayList_v1<E> {
     // ...
     @SuppressWarnings("unchecked")
     public <T> T[] toArray(T[] a) {
-        a = (T[])Array.newInstance(a.getClass().getComponentType(), size); // 1
+        a = (T[])Array.newInstance(a.getClass().getComponentType(), size);         
         System.arraycopy(data, 0, a, 0, size);
         return a;
     }

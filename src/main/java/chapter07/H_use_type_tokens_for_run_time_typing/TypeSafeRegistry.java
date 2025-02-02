@@ -3,6 +3,7 @@ package chapter07.H_use_type_tokens_for_run_time_typing;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 
 public class TypeSafeRegistry {
     private Map<Class<?>,List<?>> typeSafeRegistry = new HashMap<>();

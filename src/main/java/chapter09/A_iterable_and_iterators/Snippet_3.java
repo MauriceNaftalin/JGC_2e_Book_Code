@@ -10,6 +10,6 @@ public class Snippet_3 {
 		List<String> modifiedStrings = strings.stream()
 		    .filter(s -> s.contains("r"))
 		    .toList();
-		assert modifiedStrings.equals(new ArrayList<>(List.of("bravo", "charlie")));
+		assert modifiedStrings.equals(List.of("bravo", "charlie"));
 	}
 }

@@ -1,4 +1,4 @@
-package chapter04.D_static_members;
+package chapter04.B_static_members;
 // ch04_1_4
 import java.util.concurrent.atomic.AtomicInteger;
 

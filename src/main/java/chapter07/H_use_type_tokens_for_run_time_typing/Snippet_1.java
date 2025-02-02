@@ -3,7 +3,7 @@ package chapter07.H_use_type_tokens_for_run_time_typing;
 import java.lang.reflect.Constructor;
 
 public class Snippet_1 {
-	public static <T> T createInstanceParameterised(Class<T> clazz) {
+	public static <T> T createInstanceParameterized(Class<T> clazz) {
 	   	try {
 			Constructor<T> constructor = clazz.getDeclaredConstructor();
 			constructor.setAccessible(true);
@@ -23,7 +23,7 @@ public class Snippet_1 {
 	}
 	public static void main(String[] args)  {
 		class Foo {};
-		Foo f1 = createInstanceParameterised(Foo.class);
+		Foo f1 = createInstanceParameterized(Foo.class);
 		Foo f2 = (Foo) createInstanceWildcard(Foo.class);
 	}
 }

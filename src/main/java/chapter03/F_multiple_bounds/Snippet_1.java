@@ -9,11 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Snippet_1 {
-	public static <S extends Readable & Closeable,
-	               T extends Appendable & Closeable>
+	public static <S extends Readable & Closeable, T extends Appendable & Closeable>
 	    void copy(IoeThrowingSupplier<S> src, IoeThrowingSupplier<T> tgt, int size)
 	                                                     throws IOException {
-	    try (S s = src.get(); T t = tgt.get()) {
+	    try (S s = src.get(); T t = tgt.get()) {  
 	        CharBuffer buf = CharBuffer.allocate(size);
 	        int i = s.read(buf);
 	        while (i >= 0) {
@@ -24,11 +23,11 @@ public class Snippet_1 {
 	        }
 	    }
 	}
-	public static void main(String[] args)  {
-		 int size = 32;
-		 Files.writeString(Path.of("file.in"), "hello world");
-		 copy(() -> new FileReader("file.in"),
-		      () -> new FileWriter("file.out"), size);
-		 assert Files.readString(Path.of("File.out")).equals("hello world");
+	public static void main(String[] args) throws IOException {
+	  int size = 32;
+	  Files.writeString(Path.of("file.in"), "hello world");
+	  copy(() -> new FileReader("file.in"),
+	       () -> new FileWriter("file.out"), size);
+	  assert Files.readString(Path.of("File.out")).equals("hello world");
 	}
 }

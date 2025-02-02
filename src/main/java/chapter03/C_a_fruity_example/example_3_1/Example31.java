@@ -9,7 +9,8 @@ abstract class Fruit {
   protected String name;
   protected int size;
   protected Fruit(String name, int size) {
-    this.name = name; this.size = size;
+    this.name = Objects.requireNonNull(name);
+    this.size = size;
   }
   public boolean equals(Object o) {
     if (o == null) return false;

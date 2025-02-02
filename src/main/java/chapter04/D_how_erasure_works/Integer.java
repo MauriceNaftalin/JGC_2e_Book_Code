@@ -1,11 +1,11 @@
-package chapter04.B_how_erasure_works;
+package chapter04.D_how_erasure_works;
 // ch04_1_10
 
-class Integer_1 implements Comparable<Integer_1>, Comparable<Long> {
+class Integer implements Comparable<Integer>, Comparable<Long> {
     // compile-time error, cannot implement two interfaces with same erasure
     private int value;
     // ...
-    public int compareTo(Integer_1 i) {
+    public int compareTo(Integer i) {
         return (value < i.value) ? -1 : (value == i.value) ? 0 : 1;
     }
     public int compareTo(Long l) {

@@ -10,7 +10,7 @@ class Counter implements Iterable<Integer> {
       private int i = 0;
       public boolean hasNext() { return i < count; }
       public Integer next() { i++; return i; }
-      public void remove(){ throw new UnsupportedOperationException(); }
+      public void remove() { throw new UnsupportedOperationException(); }
     };
   }
 

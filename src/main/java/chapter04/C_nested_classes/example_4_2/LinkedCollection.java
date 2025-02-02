@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 
 class LinkedCollection<E> extends AbstractCollection<E> {
   private static class Node<T> {
-    private T element;
+    private final T element;
     private Node<T> next = null;
     private Node(T elt) { element = elt; }
   }

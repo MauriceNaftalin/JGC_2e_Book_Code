@@ -1,5 +1,8 @@
 package chapter02.E_the_get_and_put_principle;
 // ch02_4_3
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,5 +1,8 @@
 package chapter06.E_reflection_for_generics;
 // ch07_5_1
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 class ReflectionForGenerics {
     public static void toString(Class<?> k) {

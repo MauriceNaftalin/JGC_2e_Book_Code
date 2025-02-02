@@ -12,7 +12,7 @@ public class Snippet_1 {
 		for (Integer i : intList) {
 		    pointList.add(new Point(i % 3, i / 3));
 		}
-		double maxDistance = Double.MIN_VALUE;
+		double maxDistance = 0;
 		for (Point p : pointList) {
 		    maxDistance = Math.max(p.distanceFrom(origin), maxDistance);
 		}
