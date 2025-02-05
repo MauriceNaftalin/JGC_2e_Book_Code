@@ -11,5 +11,6 @@ public class Snippet_2 {
 		for (int i=0; i<5; i++) sink.add(i);
 		int sum = source.stream().mapToInt(Number::intValue).sum();
 		assert sum == 10;
+
 	}
 }

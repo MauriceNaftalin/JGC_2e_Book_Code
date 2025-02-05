@@ -16,5 +16,6 @@ public class Snippet_1 {
 		for (Point p : pointList) {
 		    maxDistance = Math.max(p.distanceFrom(origin), maxDistance);
 		}
+
 	}
 }

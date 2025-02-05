@@ -8,5 +8,6 @@ public class Snippet_1 {
 		List<Integer> ints = new ArrayList<Integer>();
 		ints.add(1);
 		int n = ints.getFirst();
+
 	}
 }

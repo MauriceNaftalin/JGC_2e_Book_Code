@@ -20,5 +20,6 @@ class Counter implements Iterable<Integer> {
 		   total += i;
 		}
 		assert total == 6;
+
 	}
 }

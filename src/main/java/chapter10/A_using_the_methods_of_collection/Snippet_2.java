@@ -1,10 +1,9 @@
 package chapter10.A_using_the_methods_of_collection;
-// 12a5
+// 12a3a
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
-import java.util.Iterator;
 
 public class Snippet_2 {
 	public static void main(String[] args)  {
@@ -25,12 +24,10 @@ public class Snippet_2 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
-		// throws ConcurrentModificationException
-		for (Iterator<Task> it = tuesdayTasks.iterator() ; it.hasNext() ; ) {
-		  Task t = it.next();
-		  if (t instanceof PhoneTask) {
-		    tuesdayTasks.remove(t);
-		  }
-		}
+
+		PhoneTask ruthPhone = new PhoneTask("Ruth", "567 1234");
+		mondayTasks.add(ruthPhone);
+		assert mondayTasks.equals(Set.of(logicCode, mikePhone, ruthPhone));
+
 	}
 }

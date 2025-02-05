@@ -7,5 +7,6 @@ public class Snippet_1 {
 		ArrayTreeNode<? extends Number>[] numberTreeNodes = integerNode.getChildren();
 		numberTreeNodes[0] = new ArrayTreeNode<>(1.0, 2);
 		Integer data = integerNode.getChildren()[0].getData();  // class cast exception
+
 	}
 }

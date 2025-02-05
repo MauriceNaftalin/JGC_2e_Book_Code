@@ -11,5 +11,6 @@ public class Snippet_1 {
 		nums.addAll(ints);
 		nums.addAll(dbls);
 		assert nums.equals(List.of(1, 2, 1.0, 0.5));
+
 	}
 }

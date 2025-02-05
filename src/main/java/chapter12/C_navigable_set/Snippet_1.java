@@ -29,15 +29,17 @@ public class Snippet_1 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
+
 		NavigableSet<PriorityTask> priorityTasks = new TreeSet<PriorityTask>();
 		priorityTasks.add(new PriorityTask(mikePhone, Priority.MEDIUM));
 		priorityTasks.add(new PriorityTask(paulPhone, Priority.HIGH));
 		priorityTasks.add(new PriorityTask(databaseCode, Priority.MEDIUM));
 		priorityTasks.add(new PriorityTask(guiCode, Priority.LOW));
-		assert(priorityTasks.toString()).equals("""
+		assert priorityTasks.toString().equals("""
 		    [PriorityTask[task=PhoneTask[name=Paul, number=123 4567], priority=HIGH], \
 		    PriorityTask[task=CodingTask[spec=db], priority=MEDIUM], \
 		    PriorityTask[task=PhoneTask[name=Mike, number=987 6543], priority=MEDIUM], \
 		    PriorityTask[task=CodingTask[spec=gui], priority=LOW]]""");
+
 	}
 }

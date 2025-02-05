@@ -9,5 +9,6 @@ public class Snippet_2 {
 		List<Integer> ints = List.of(1, 2, 3, 4);
 		assert ints.contains(obj);
 		assert ints.containsAll(objs);
+
 	}
 }

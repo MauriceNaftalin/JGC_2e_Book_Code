@@ -14,6 +14,8 @@ class Pair<T,U> {
 	public static void main(String[] args)  {
 		Pair<String, Integer> pair1 = new Pair<String, Integer>("one", 2);
 		assert pair1.getFirst().equals("one") && pair1.getSecond() == 2;
+
 		Pair pair2 = new Pair<String, Integer>("one", 2);
+
 	}
 }

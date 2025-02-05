@@ -1,27 +1,35 @@
 package chapter12.C_navigable_set;
-// 13c10
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+// 13c9
 import java.util.NavigableSet;
-import java.util.Set;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.TreeSet;
+import java.util.Iterator;
 
 public class Snippet_9 {
 	public static void main(String[] args)  {
-		// construct and populate a NavigableSet whose iterator returns its
-		// elements in the reverse of natural order:
-		NavigableSet<String> base = new TreeSet<>(Comparator.reverseOrder());
-		Collections.addAll(base, "b", "a", "c");
-		// call the two different constructors for TreeSet, supplying the
-		// set just constructed, but with different static types:
-		NavigableSet<String> sortedSet1 = new TreeSet<>((Set<String>)base);
-		NavigableSet<String> sortedSet2 = new TreeSet<>(base);
-		// and the two sets have different iteration orders:
-		List<String> forward = new ArrayList<>(sortedSet1);
-		List<String> backward = new ArrayList<>(sortedSet2);
-		assert !forward.equals(backward);
-		assert forward.reversed().equals(backward);
+		NavigableSet<String> stringSet = new TreeSet<>();
+		Collections.addAll(stringSet, "abc", "cde", "x-ray" ,"zed");
+		Optional<String> last = Optional.ofNullable(stringSet.floor("x-ray"));
+		assert last.equals(Optional.of("x-ray"));
+		Optional<String> secondToLast = last.map(stringSet::lower);
+		assert secondToLast.equals(Optional.of("cde"));
+		Optional<String> thirdToLast = secondToLast.map(stringSet::lower);
+		assert thirdToLast.equals(Optional.of("abc"));
+
+		NavigableSet<String> headSet = stringSet.headSet(last.get(), true);
+		NavigableSet<String> reverseHeadSet = headSet.descendingSet();
+		assert reverseHeadSet.toString().equals("[x-ray, cde, abc]");
+		String conc = " ";
+		for (String s : reverseHeadSet) {
+		  conc += s + " ";
+		}
+		assert conc.equals(" x-ray cde abc ");
+
+		for (Iterator<String> itr = headSet.descendingIterator(); itr.hasNext(); ) {
+		  itr.next(); itr.remove();
+		}
+		assert headSet.isEmpty();
+
 	}
 }

@@ -11,5 +11,6 @@ public class Snippet_3 {
 		    .filter(s -> s.contains("r"))
 		    .toList();
 		assert modifiedStrings.equals(List.of("bravo", "charlie"));
+
 	}
 }

@@ -8,5 +8,6 @@ public class Snippet_1 {
 		// compiles in Java 16 onwards
 		ArrayList<Integer> x = new ArrayList<>();
 		assert x instanceof List<? extends Number>;
+
 	}
 }

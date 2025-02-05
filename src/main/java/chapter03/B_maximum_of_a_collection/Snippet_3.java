@@ -10,5 +10,6 @@ public class Snippet_3 {
 		assert Collections.max(ints) == 2;
 		List<String> strs = Arrays.asList("zero", "one", "two");
 		assert Collections.max(strs).equals("zero");
+
 	}
 }

@@ -9,5 +9,6 @@ public class Snippet_1 {
 		nums.add(2);
 		nums.add(0.25);
 		assert nums.equals(List.of(2, 0.25));
+
 	}
 }

@@ -1,9 +1,5 @@
 package chapter10.A_using_the_methods_of_collection;
-// 12a6
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Collections;
-import java.util.Set;
+// 12a17
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -46,29 +42,4 @@ public class MergeCollections {
         }
     }
 
-	public static void main(String[] args)  {
-		PhoneTask mikePhone = new PhoneTask("Mike", "987 6543");
-		PhoneTask paulPhone = new PhoneTask("Paul", "123 4567");
-		CodingTask databaseCode = new CodingTask("db");
-		CodingTask guiCode = new CodingTask("gui");
-		CodingTask logicCode = new CodingTask("logic");
-		Collection<PhoneTask> phoneTasks = new HashSet<>();           
-		Collection<CodingTask> codingTasks = new HashSet<>();
-		Collection<Task> mondayTasks = new HashSet<>();
-		Collection<Task> tuesdayTasks = new HashSet<>();
-		Collections.addAll(phoneTasks, mikePhone, paulPhone);          
-		Collections.addAll(codingTasks, databaseCode, guiCode, logicCode);
-		Collections.addAll(mondayTasks, logicCode, mikePhone);
-		Collections.addAll(tuesdayTasks, databaseCode, guiCode, paulPhone);
-		assert phoneTasks.equals(Set.of(mikePhone, paulPhone));
-		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
-		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
-		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
-		Collection<Task> sortedMondayTasks = new TreeSet<>(mondayTasks);
-		Collection<Task> sortedTuesdayTasks = new TreeSet<>(tuesdayTasks);
-		Collection<Task> mergedTasks =
-		    MergeCollections.merge(sortedMondayTasks, sortedTuesdayTasks);
-		assert mergedTasks.equals(
-		    List.of(databaseCode, guiCode, logicCode, mikePhone, paulPhone));
-	}
 }

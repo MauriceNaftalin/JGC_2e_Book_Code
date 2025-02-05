@@ -8,5 +8,6 @@ public class Snippet_2 {
 		List<Integer> ints = new ArrayList<Integer>();
 		ints.add(Integer.valueOf(1));
 		int n = ints.get(0).intValue();
+
 	}
 }

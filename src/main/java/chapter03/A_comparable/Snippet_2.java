@@ -6,5 +6,6 @@ public class Snippet_2 {
 		String str0 = "zero";
 		String str1 = "one";
 		assert str0.compareTo(str1) > 0;
+
 	}
 }

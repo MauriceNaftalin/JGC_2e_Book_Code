@@ -11,5 +11,6 @@ public class Snippet_1 {
 		        strings.remove(s);      // throws ConcurrentModificationException
 		    }
 		}
+
 	}
 }

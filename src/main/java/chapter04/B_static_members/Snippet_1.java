@@ -8,5 +8,6 @@ public class Snippet_1 {
 		List<Integer> ints = Arrays.asList(1, 2, 3);
 		List<String> strings = Arrays.asList("one","two");
 		assert ints.getClass() == strings.getClass();
+
 	}
 }

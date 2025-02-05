@@ -6,5 +6,6 @@ public class Snippet_3 {
 		Integer i = 0;
 		String s = "one";
 		assert i.compareTo(s) < 0; // compile-time error
+
 	}
 }

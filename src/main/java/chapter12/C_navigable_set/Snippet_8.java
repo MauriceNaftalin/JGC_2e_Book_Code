@@ -1,10 +1,9 @@
 package chapter12.C_navigable_set;
-// 13c9
+// 13c8
 import java.util.NavigableSet;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.TreeSet;
-import java.util.Iterator;
 
 public class Snippet_8 {
 	public static void main(String[] args)  {
@@ -16,6 +15,7 @@ public class Snippet_8 {
 		assert secondToLast.equals(Optional.of("cde"));
 		Optional<String> thirdToLast = secondToLast.map(stringSet::lower);
 		assert thirdToLast.equals(Optional.of("abc"));
+
 		NavigableSet<String> headSet = stringSet.headSet(last.get(), true);
 		NavigableSet<String> reverseHeadSet = headSet.descendingSet();
 		assert reverseHeadSet.toString().equals("[x-ray, cde, abc]");
@@ -24,9 +24,6 @@ public class Snippet_8 {
 		  conc += s + " ";
 		}
 		assert conc.equals(" x-ray cde abc ");
-		for (Iterator<String> itr = headSet.descendingIterator(); itr.hasNext(); ) {
-		  itr.next(); itr.remove();
-		}
-		assert headSet.isEmpty();
+
 	}
 }

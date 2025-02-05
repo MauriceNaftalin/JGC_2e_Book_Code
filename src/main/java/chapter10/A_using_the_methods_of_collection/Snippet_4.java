@@ -1,11 +1,9 @@
 package chapter10.A_using_the_methods_of_collection;
-// 12a3
+// 12a5
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Snippet_4 {
 	public static void main(String[] args)  {
@@ -26,25 +24,14 @@ public class Snippet_4 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
-		Collection<PhoneTask> phoneTasks_1 =
-		    Stream.of(mikePhone,paulPhone).collect(Collectors.toSet());
+
 		PhoneTask ruthPhone = new PhoneTask("Ruth", "567 1234");
 		mondayTasks.add(ruthPhone);
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone, ruthPhone));
-		Collection<Task> allTasks_2 = Stream.of(mondayTasks,tuesdayTasks)
-		        .flatMap(Collection::stream)
-		        .collect(Collectors.toSet());
-		assert allTasks_2.equals(Set.of(logicCode, mikePhone, ruthPhone,
-		        databaseCode, guiCode, paulPhone));
-		Collection<Task> tuesdayNonPhoneTasks = tuesdayTasks.stream()
-		    .filter(t -> ! phoneTasks.contains(t))
-		    .collect(Collectors.toSet());
-		Collection<PhoneTask> tuesdayPhoneTasks = phoneTasks.stream()
-		    .filter(tuesdayTasks::contains)
-		    .collect(Collectors.toSet());
-		var tuesdayCodeTasks = tuesdayTasks.stream()
-		    .filter(t -> !(t instanceof PhoneTask))
-		    .collect(Collectors.toSet());
-		assert tuesdayCodeTasks.equals(Set.of(databaseCode, guiCode));
+
+		boolean wasPresent = mondayTasks.remove(mikePhone);
+		assert wasPresent;
+		assert mondayTasks.equals(Set.of(logicCode, ruthPhone));
+
 	}
 }

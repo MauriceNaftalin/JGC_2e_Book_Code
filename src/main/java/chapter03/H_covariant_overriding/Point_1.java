@@ -7,5 +7,6 @@ record Point_1(double x, double y)  {
 	public static void main(String[] args)  {
 		Point_1 p = new Point_1(1, 2);
 		Point_1 q = (Point_1)p.clone();
+
 	}
 }

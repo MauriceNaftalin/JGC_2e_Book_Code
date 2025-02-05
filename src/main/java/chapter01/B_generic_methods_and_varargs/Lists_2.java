@@ -10,13 +10,12 @@ class Lists_2 {
     return list;
   }
 
-	public static <T> void addAll(List<T> list, T... arr) {
-	  for (T elt : arr) list.add(elt);
-	}
 	public static void main(String[] args)  {
 		List<Integer> ints1 = Lists_2.toList(1, 2, 3);
 		List<String> words = Lists_2.toList("Hello", "world!");
+
 		var ints = Lists_2.<Integer>toList();
 		var objs = Lists_2.<Object>toList(1, "two");
+
 	}
 }

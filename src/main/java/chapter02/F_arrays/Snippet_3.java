@@ -8,5 +8,6 @@ public class Snippet_3 {
 		List<Integer> ints = Arrays.asList(0);
 		List<? extends Number> nums = ints;
 		nums.set(0, 3.14);  // compile-time error
+
 	}
 }

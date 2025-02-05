@@ -10,5 +10,6 @@ public class Snippet_1 {
 		words.add("world!");
 		String s = words.get(0)+words.get(1);              
 		assert s.equals("Hello world!");
+
 	}
 }

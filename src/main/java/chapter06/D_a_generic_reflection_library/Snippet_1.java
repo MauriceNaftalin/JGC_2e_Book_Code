@@ -18,5 +18,6 @@ public class Snippet_1 {
 		List<Integer> coll = new ArrayList<>(List.of(1, 2, 3));
 		assert copy(coll).equals(coll);
 		assert copy(coll).getClass().equals(coll.getClass());
+
 	}
 }

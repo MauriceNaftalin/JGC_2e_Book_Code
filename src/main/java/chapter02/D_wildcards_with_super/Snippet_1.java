@@ -16,9 +16,11 @@ public class Snippet_1 {
 		List<Integer> ints = List.of(5, 6);
 		Collections.copy(objs, ints);
 		assert objs.equals(List.of(5, 6, "four"));
+
 		Collections.copy(objs, ints);
 		Collections.<Object>copy(objs, ints);
 		Collections.<Number>copy(objs, ints);
 		Collections.<Integer>copy(objs, ints);
+
 	}
 }

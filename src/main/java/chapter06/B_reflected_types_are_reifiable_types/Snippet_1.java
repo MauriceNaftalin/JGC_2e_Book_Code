@@ -9,5 +9,6 @@ public class Snippet_1 {
 		List<String> strs = new ArrayList<String>();
 		assert ints.getClass() == strs.getClass();
 		assert ints.getClass() == ArrayList.class;
+
 	}
 }

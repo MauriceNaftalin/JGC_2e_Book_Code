@@ -10,5 +10,6 @@ public class Snippet_1 {
 		assert arr[0] == 3;             // and the underlying array changes
 		arr[2] = 0;                     // now change the underlying array...
 		assert list.get(2) == 0;        // and the list view changes
+
 	}
 }

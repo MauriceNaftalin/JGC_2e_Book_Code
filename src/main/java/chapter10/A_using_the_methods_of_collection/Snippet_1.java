@@ -1,9 +1,11 @@
 package chapter10.A_using_the_methods_of_collection;
-// 12a4
+// 12a3
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Snippet_1 {
 	public static void main(String[] args)  {
@@ -24,11 +26,9 @@ public class Snippet_1 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
-		// throws ConcurrentModificationException
-		for (Task t : tuesdayTasks) {
-		  if (t instanceof PhoneTask) {
-		    tuesdayTasks.remove(t);
-		  }
-		}
+
+		Collection<PhoneTask> phoneTasks_1 =
+		    Stream.of(mikePhone,paulPhone).collect(Collectors.toSet());
+
 	}
 }

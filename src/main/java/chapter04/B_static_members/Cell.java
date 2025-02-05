@@ -19,5 +19,6 @@ class Cell<T> {
 		Cell<String> a = new Cell<String>("one");
 		Cell<Integer> b = new Cell<Integer>(2);
 		assert a.getId() == 0 && b.getId() == 1 && Cell.getCount() == 2;
+
 	}
 }

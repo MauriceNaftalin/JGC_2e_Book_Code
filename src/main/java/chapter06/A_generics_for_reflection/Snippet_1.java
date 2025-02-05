@@ -7,5 +7,6 @@ public class Snippet_1 {
 		Number n = Integer.valueOf(42);
 		Class<? extends Number> kn = n.getClass();
 		assert ki == kn;
+
 	}
 }

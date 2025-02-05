@@ -9,5 +9,6 @@ public class Snippet_2 {
 		List<? extends Number>[] numLists = intLists;
 		numLists[0] = List.of(3.14);
 		int n = intLists[0].get(0);  // class cast exception!
+
 	}
 }

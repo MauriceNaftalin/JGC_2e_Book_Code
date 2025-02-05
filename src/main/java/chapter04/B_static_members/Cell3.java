@@ -17,5 +17,6 @@ class Cell3<T> {
 		Cell3<String> a = new Cell3<String>("one");
 		Cell3<Integer> b = new Cell3<Integer>(2);
 		assert Cell3.getValues().equals(List.of("one", 2));
+
 	}
 }

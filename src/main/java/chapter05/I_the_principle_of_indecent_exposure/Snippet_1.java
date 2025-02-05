@@ -7,5 +7,6 @@ public class Snippet_1 {
 		Number[] nums = ints;
 		nums[0] = 3.14;  // array store exception
 		int n = ints[0];
+
 	}
 }

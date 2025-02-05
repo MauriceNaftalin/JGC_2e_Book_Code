@@ -14,5 +14,6 @@ public class Snippet_2 {
 		    }
 		}
 		assert strings.equals(List.of("bravo", "charlie"));
+
 	}
 }

@@ -8,5 +8,6 @@ public class Snippet_4 {
 		List<?> list1 = new ArrayList<Object>();   // ok
 		List<?> list2 = new List<Object>(); // compile-time error
 		List<?> list3 = new ArrayList<?>(); // compile-time error
+
 	}
 }

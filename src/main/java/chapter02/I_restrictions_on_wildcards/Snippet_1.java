@@ -10,5 +10,6 @@ public class Snippet_1 {
 		List<?> list = new ArrayList<?>();  // compile-time error
 		Map<String, ? extends Number> map
 		  = new HashMap<String, ? extends Number>();  // compile-time error
+
 	}
 }

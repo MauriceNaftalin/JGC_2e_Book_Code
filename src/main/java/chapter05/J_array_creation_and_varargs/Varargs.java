@@ -12,5 +12,6 @@ class Varargs {
 		List<? extends Number>[] numLists = intLists;
 		numLists[0] = List.of(3.14);        // heap pollution
 		int n = intLists[0].get(0);         // class cast exception
+
 	}
 }

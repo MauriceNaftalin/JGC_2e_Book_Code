@@ -6,5 +6,6 @@ public class Snippet_4 {
 		Number m = Integer.valueOf(2);
 		Number n = Double.valueOf(3.14);
 		assert m.compareTo(n) < 0; // compile-time error
+
 	}
 }

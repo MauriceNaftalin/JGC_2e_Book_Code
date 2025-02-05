@@ -1,10 +1,11 @@
 package chapter10.A_using_the_methods_of_collection;
-// 12a2
+// 12a4
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
-import java.util.Iterator;
+import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class Snippet_3 {
 	public static void main(String[] args)  {
@@ -25,37 +26,16 @@ public class Snippet_3 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
+
 		PhoneTask ruthPhone = new PhoneTask("Ruth", "567 1234");
 		mondayTasks.add(ruthPhone);
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone, ruthPhone));
-		Collection<Task> allTasks_1 = new HashSet<>(mondayTasks);
-		allTasks_1.addAll(tuesdayTasks);
-		assert allTasks_1.equals(Set.of(logicCode, mikePhone, ruthPhone,
+
+		Collection<Task> allTasks_2 = Stream.of(mondayTasks,tuesdayTasks)
+		        .flatMap(Collection::stream)
+		        .collect(Collectors.toSet());
+		assert allTasks_2.equals(Set.of(logicCode, mikePhone, ruthPhone,
 		        databaseCode, guiCode, paulPhone));
-		boolean wasPresent = mondayTasks.remove(mikePhone);
-		assert wasPresent;
-		assert mondayTasks.equals(Set.of(logicCode, ruthPhone));
-		mondayTasks.clear();
-		assert mondayTasks.equals(Collections.EMPTY_SET);
-		Collection<Task> tuesdayNonPhoneTasks = new HashSet<>(tuesdayTasks);
-		tuesdayNonPhoneTasks.removeAll(phoneTasks);
-		assert tuesdayNonPhoneTasks.equals(Set.of(databaseCode, guiCode));
-		Collection<Task> phoneTuesdayTasks = new HashSet<>(tuesdayTasks);
-		phoneTuesdayTasks.retainAll(phoneTasks);
-		assert phoneTuesdayTasks.equals(Set.of(paulPhone));
-		Collection<PhoneTask> tuesdayPhoneTasks = new HashSet<>(phoneTasks);
-		tuesdayPhoneTasks.retainAll(tuesdayTasks);
-		assert tuesdayPhoneTasks.equals(Set.of(paulPhone));
-		assert tuesdayPhoneTasks.contains(paulPhone);
-		assert tuesdayTasks.containsAll(tuesdayPhoneTasks);
-		assert mondayTasks.isEmpty();
-		assert mondayTasks.size() == 0;
-		for (Iterator<Task> it = tuesdayTasks.iterator() ; it.hasNext() ; ) {
-		  Task t = it.next();
-		  if (t instanceof PhoneTask) {
-		    it.remove();
-		  }
-		  assert tuesdayTasks.equals(Set.of(databaseCode, guiCode));
-		}
+
 	}
 }

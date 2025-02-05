@@ -10,5 +10,6 @@ public class Snippet_3 {
 		lists.add(List.of("four","five"));
 		assert lists.equals(List.of(List.of(1, 2, 3), List.of("four", "five")));
 		assert lists.getFirst().getFirst().toString().equals("1");
+
 	}
 }

@@ -1,9 +1,5 @@
 package chapter12.C_navigable_set;
-// 13c4
-import chapter10.A_using_the_methods_of_collection.Task;
-import chapter10.A_using_the_methods_of_collection.CodingTask;
-import chapter10.A_using_the_methods_of_collection.PhoneTask;
-import chapter10.A_using_the_methods_of_collection.EmptyTask;
+// 13c3
 import chapter10.A_using_the_methods_of_collection.Task;
 import chapter10.A_using_the_methods_of_collection.CodingTask;
 import chapter10.A_using_the_methods_of_collection.PhoneTask;
@@ -14,7 +10,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.NavigableSet;
 import java.util.TreeSet;
-import java.util.NavigableSet;
 import java.util.NavigableSet;
 
 public class Snippet_3 {
@@ -36,16 +31,18 @@ public class Snippet_3 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
+
 		NavigableSet<PriorityTask> priorityTasks = new TreeSet<PriorityTask>();
 		priorityTasks.add(new PriorityTask(mikePhone, Priority.MEDIUM));
 		priorityTasks.add(new PriorityTask(paulPhone, Priority.HIGH));
 		priorityTasks.add(new PriorityTask(databaseCode, Priority.MEDIUM));
 		priorityTasks.add(new PriorityTask(guiCode, Priority.LOW));
-		assert(priorityTasks.toString()).equals("""
+		assert priorityTasks.toString().equals("""
 		    [PriorityTask[task=PhoneTask[name=Paul, number=123 4567], priority=HIGH], \
 		    PriorityTask[task=CodingTask[spec=db], priority=MEDIUM], \
 		    PriorityTask[task=PhoneTask[name=Mike, number=987 6543], priority=MEDIUM], \
 		    PriorityTask[task=CodingTask[spec=gui], priority=LOW]]""");
+
 		PriorityTask firstLowPriorityTask = new PriorityTask(new EmptyTask(), Priority.LOW);
 		NavigableSet<PriorityTask> highAndMediumPriorityTasks =
 		        priorityTasks.headSet(firstLowPriorityTask, false);
@@ -53,12 +50,6 @@ public class Snippet_3 {
 		    [PriorityTask[task=PhoneTask[name=Paul, number=123 4567], priority=HIGH], \
 		    PriorityTask[task=CodingTask[spec=db], priority=MEDIUM], \
 		    PriorityTask[task=PhoneTask[name=Mike, number=987 6543], priority=MEDIUM]]""");
-		PriorityTask firstMediumPriorityTask =
-		  new PriorityTask(new EmptyTask(), Priority.MEDIUM);
-		NavigableSet<PriorityTask> mediumPriorityTasks =
-		  priorityTasks.subSet(firstMediumPriorityTask, true, firstLowPriorityTask, false);
-		assert(mediumPriorityTasks.toString()).equals("""
-		    [PriorityTask[task=CodingTask[spec=db], priority=MEDIUM], \
-		    PriorityTask[task=PhoneTask[name=Mike, number=987 6543], priority=MEDIUM]]""");
+
 	}
 }

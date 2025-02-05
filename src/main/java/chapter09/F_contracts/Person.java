@@ -25,5 +25,6 @@ import java.util.HashSet;
 		    alice.setName("Bob");
 		    assert ! people.contains(new Person("Alice"));
 		    assert ! people.contains(new Person("Bob"));
+
 	}
 }

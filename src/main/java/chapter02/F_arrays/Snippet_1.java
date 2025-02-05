@@ -6,5 +6,6 @@ public class Snippet_1 {
 		Integer[] ints = {0};
 		Number[] nums = ints;
 		nums[0] = 3.14;         // array store exception (subtype of RuntimeException)
+
 	}
 }

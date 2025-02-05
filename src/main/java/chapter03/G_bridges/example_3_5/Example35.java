@@ -21,5 +21,6 @@ record Point(double x, double y) implements Comparable<Point> {
 		assert typeToBridge.size() == 2;
 		assert ! typeToBridge.get(Point.class);    // compareTo(Point) is not a bridge method
 		assert typeToBridge.get(Object.class);     // compareTo(Object) is a bridge method
+
 	}
 }

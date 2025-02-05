@@ -13,5 +13,6 @@ public class Snippet_2 {
 		      .map(i -> new Point(i % 3, i / 3))
 		      .mapToDouble(p -> p.distanceFrom(origin))
 		      .max();
+
 	}
 }

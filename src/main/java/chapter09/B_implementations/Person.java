@@ -16,5 +16,6 @@ import java.util.HashSet;
 		    Set<Person> people = new HashSet<>();
 		    people.add(new Person("Alice"));
 		    assert ! people.contains(new Person("Alice"));
+
 	}
 }

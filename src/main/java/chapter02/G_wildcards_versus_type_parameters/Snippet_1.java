@@ -11,5 +11,6 @@ public class Snippet_1 {
 		assert objs.containsAll(ints);
 		assert ! ints.contains(obj);
 		assert ! ints.containsAll(objs);
+
 	}
 }

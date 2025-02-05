@@ -8,5 +8,6 @@ public class Snippet_2 {
 		List<Integer> ints = new ArrayList<>();
 		List<Number> nums = ints;         //  can't be allowed 
 		nums.add(3.14);
+
 	}
 }

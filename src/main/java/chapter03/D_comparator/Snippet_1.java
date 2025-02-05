@@ -21,12 +21,15 @@ public class Snippet_1 {
 				  return s1.compareTo(s2);
 			  }
 		  };
+
 		assert "two".compareTo("three") > 0;
 		assert sizeOrder.compare("two", "three") < 0;
+
 		Collection<String> strings = Arrays.asList("from","aaa","to","zzz");
 		assert Collections.max(strings).equals("zzz");
 		assert Collections.min(strings).equals("aaa");
 		assert Collections.max(strings, sizeOrder).equals("from");
 		assert Collections.min(strings, sizeOrder).equals("to");
+
 	}
 }

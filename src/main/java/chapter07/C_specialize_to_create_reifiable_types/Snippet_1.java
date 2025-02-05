@@ -13,5 +13,6 @@ public class Snippet_1 {
 				.filter(list -> list instanceof ListString)
 				.toArray(ListString[]::new);
 		assert Arrays.toString(listStringArray).equals("[[one, two], [seven, eight]]");
+
 	}
 }

@@ -25,5 +25,6 @@ public class Snippet_1 {
 		class Foo {};
 		Foo f1 = createInstanceParameterized(Foo.class);
 		Foo f2 = (Foo) createInstanceWildcard(Foo.class);
+
 	}
 }

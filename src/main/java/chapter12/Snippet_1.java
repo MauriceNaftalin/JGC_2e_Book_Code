@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Snippet_1 {
 	public static void main(String[] args)  {
@@ -27,8 +29,10 @@ public class Snippet_1 {
 		assert codingTasks.equals(Set.of(databaseCode, guiCode, logicCode));
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
+
 		Set<Task> phoneAndMondayTasks = new HashSet<>(mondayTasks);
 		phoneAndMondayTasks.addAll(phoneTasks);
 		assert phoneAndMondayTasks.equals(Set.of(logicCode, mikePhone, paulPhone));
+
 	}
 }

@@ -9,7 +9,10 @@ class Lists {
 	public static void main(String[] args)  {
 		List<?> list1 = Lists.factory();
 		List<?> list2 = Lists.<Object>factory();
+
 		List<?> list3 = Lists.<?>factory();  // compile-time error
+
 		List<List<?>> list4 = Lists.<List<?>>factory();  // ok
+
 	}
 }
