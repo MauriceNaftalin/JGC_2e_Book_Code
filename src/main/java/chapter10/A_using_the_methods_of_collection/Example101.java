@@ -25,5 +25,14 @@ public class Example101 {
 		assert mondayTasks.equals(Set.of(logicCode, mikePhone));
 		assert tuesdayTasks.equals(Set.of(databaseCode, guiCode, paulPhone));
 
+		PhoneTask ruthPhone = new PhoneTask("Ruth", "567 1234");
+		mondayTasks.add(ruthPhone);
+		assert mondayTasks.equals(Set.of(logicCode, mikePhone, ruthPhone));
+
+		Collection<Task> allTasks_1 = new HashSet<>(mondayTasks);
+		allTasks_1.addAll(tuesdayTasks);
+		assert allTasks_1.equals(Set.of(logicCode, mikePhone, ruthPhone,
+		        databaseCode, guiCode, paulPhone));
+
 	}
 }

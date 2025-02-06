@@ -1,17 +1,29 @@
 package chapter02.E_the_get_and_put_principle;
-// ch02_4_5
+// ch02_4_2b
+import java.util.Collection;
+import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collection;
 import java.util.List;
 
 public class Snippet_4 {
+	public static void storeIntegers(Collection<? super Integer> ints, int n) {
+	  for (int i = 0; i < n; i++) ints.add(i);
+	}
+	public static double sum(Collection<? extends Number> nums) {
+	  double s = 0.0;
+	  for (Number num : nums) s += num.doubleValue();
+	  return s;
+	}
+	public static double sumValues(Collection<Number> nums, int n) {
+	  storeIntegers(nums, n);
+	  return sum(nums);
+	}
 	public static void main(String[] args)  {
-		List<Integer> ints = new ArrayList<>();
-		ints.add(1);
-		ints.add(2);
-		List<? extends Number> nums = ints;
-		nums.add(null);    // ok
-		assert nums.equals(Arrays.asList(1, 2, null));
+		List<Number> nums2 = new ArrayList<>();
+		double sum = sumValues(nums2, 5);
+		assert sum == 10;
 
 	}
 }
