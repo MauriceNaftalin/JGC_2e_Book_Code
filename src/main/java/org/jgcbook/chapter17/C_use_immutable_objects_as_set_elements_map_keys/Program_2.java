@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.HashSet;
 
-public class Snippet_2 {
+public class Program_2 {
 	public static void main(String[] args)  {
 		Task codeUi = new CodingTask("code ui", Duration.ofHours(4));
 		var project1 = new Project("project1", new HashSet<>(Set.of(codeUi)));

@@ -6,7 +6,7 @@ interface Stack {
   public int pop();
   public boolean isEmpty();
 }
-class ArrayStack implements Stack {
+public class ArrayStack implements Stack {
     private final int MAX_ELEMENTS = 10;
     private int[] stack;
     private int index;

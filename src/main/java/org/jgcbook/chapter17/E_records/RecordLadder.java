@@ -1,4 +1,4 @@
-package org.jgcbook.chapter17.records;
+package org.jgcbook.chapter17.E_records;
 // 19e2
 import java.util.List;
 import java.util.ArrayList;
