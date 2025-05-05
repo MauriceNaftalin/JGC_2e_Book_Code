@@ -32,9 +32,9 @@ public class Program_1 {
 		priorityTasks.add(new PriorityTask(databaseCode, Priority.MEDIUM));
 		priorityTasks.add(new PriorityTask(guiCode, Priority.LOW));
 		assert priorityTasks.toString().equals("""
-		    [PriorityTask[task=PhoneTask[name=Paul, number=123 4567], priority=HIGH], \
-		    PriorityTask[task=CodingTask[spec=db], priority=MEDIUM], \
-		    PriorityTask[task=PhoneTask[name=Mike, number=987 6543], priority=MEDIUM], \
+		    [PriorityTask[task=PhoneTask[name=Paul, number=123 4567], priority=HIGH], 
+		    PriorityTask[task=CodingTask[spec=db], priority=MEDIUM], 
+		    PriorityTask[task=PhoneTask[name=Mike, number=987 6543], priority=MEDIUM], 
 		    PriorityTask[task=CodingTask[spec=gui], priority=LOW]]""");
 
 	}

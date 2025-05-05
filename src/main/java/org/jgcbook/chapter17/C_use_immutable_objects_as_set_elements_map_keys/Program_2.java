@@ -12,18 +12,19 @@ import java.util.HashSet;
 
 public class Program_2 {
 	public static void main(String[] args)  {
-		Task codeUi = new CodingTask("code ui", Duration.ofHours(4));
+		Task codeUi = new CodingTask("code ui", Duration.ofHours(6));
 		var project1 = new Project("project1", new HashSet<>(Set.of(codeUi)));
-		Task codeDb1 = new CodingTask("code db1", Duration.ofHours(3));
-		Task codeDb2 = new CodingTask("code db2", Duration.ofHours(3));
-		var project2 = new Project("project2", new HashSet<>(Set.of(codeDb2, codeDb1)));
+
+		Task codeDb = new CodingTask("code db", Duration.ofHours(4));
+		var project2 = new Project("project2", new HashSet<>(Set.of(codeDb)));
+
 		var projectSet = new TreeSet<>(Comparator
 		        .comparing(Project::getTotalDuration)
 		        .thenComparing(Project::getName));
-		projectSet.addAll(List.of(project1,project2));                      //1
-		assert projectSet.contains(project2);                               //2
-		project2.removeTask(codeDb2);
-		assert ! projectSet.contains(project2);                             //3
 
+		projectSet.addAll(List.of(project1,project2));                           //1
+		assert projectSet.contains(project2);
+		project2.addTask(new CodingTask("code ai", Duration.ofHours(5)));  //2
+		assert ! projectSet.contains(project2);
 	}
 }

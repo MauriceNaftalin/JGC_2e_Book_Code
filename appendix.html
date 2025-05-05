@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Evolution, Not Revolution</title><link rel="stylesheet" type="text/css" href="epub.css"/></head><body data-type="book"><section data-type="chapter" data-pdf-bookmark="Chapter 19. Evolution, Not Revolution" id="evolution_not_revolution">
+<h1>Evolution, Not Revolution</h1>
+
+
+<p>One motto underpinning the design of generics for Java is <em>evolution, not revolution</em>. It must be possible to migrate a large, existing body of code to use generics gradually (evolution) without requiring a radical, all-at-once change (revolution). The generics design ensures that old code compiles against the new Java libraries, avoiding the unfortunate situation in which half of your code needs old libraries and half of your code needs new libraries.</p>
+
+<p>The requirements for evolution are much stronger than the usual <em>backward compatibility</em>. With simple backward compatibility, one would supply both legacy and generic versions for each application; this is exactly what happens in C#, for example. If you are building on top of code supplied by multiple suppliers, some of whom use legacy collections and some of whom use generic collections, this might rapidly lead to a versioning nightmare.</p>
+
+<p>What we require is that the <em>same</em> client code works with both the legacy and generic versions of a library. This means that the supplier and clients of a library can make completely independent choices about when to move from legacy to generic code. This is a much stronger requirement than backward compatibility; it is called <em>migration compatibility</em> or <em>platform compatibility</em>.</p>
+
+<p>Java implements generics via erasure, which ensures that legacy and generic versions usually generate identical class files, save for some auxiliary information about types. It is possible to replace a legacy class file by a generic class file without changing, or even recompiling, any client code; this is called <em>binary compatibility</em>.</p>
+
+<p>We summarize this with the motto <em>binary compatibility ensures migration compatibility</em>—or, more concisely, <em>erasure eases evolution</em>.</p>
+
+<p>This section shows how to add generics to existing code; it considers a small example, a library for stacks that extends the Collections Framework, together with an associated client. We begin with the legacy stack library and client (written for Java before generics), and then present the corresponding generic library and client (written for Java with generics). Our example code is small, so it is easy to update to generics all in one go, but in practice the library and client will be much larger, and we may want to evolve them separately. This is aided by <em>raw types</em>, which are the legacy counterpart of parameterized types.</p>
+
+<p>The parts of the program may evolve in either order. You may have a generic library with a legacy client; this is the common case for anyone that uses the Collections Framework in Java 5 with legacy code. Or you may have a legacy library with a generic client; this is the case where you want to provide generic signatures for the library without the need to rewrite the entire library. We consider three ways to do this: minimal changes to the source, stub files, and wrappers. The first is useful when you have access to the source and the second when you do not; we recommend against the third.</p>
+
+<p>In practice, the library and client may involve many interfaces and classes, and there may not even be a clear distinction between library and client. But the same principles discussed here still apply, and may be used to evolve any part of a program independently of any other part.</p>
+
+
+
+
+
+
+<section data-type="sect1" data-pdf-bookmark="Legacy Library with Legacy Client" id="legacy_library_with_legacy_client">
+<h1>Legacy Library with Legacy Client</h1>
+
+<p>We begin with a simple library of stacks and an associated client, as presented in <a data-type="xref" href="#legacy_library_with_legacy_client-id001">Example 19-1</a>. This is <em>legacy</em> code, written for Java 1.4 and its version of the Collections Framework. Like the Collections Framework, we structure the library as an interface <code>Stack</code> (analogous to <code>List</code>), an implementation class <code>ArrayStack</code> (analogous to <code>ArrayList</code>), and a utility class <code>Stacks</code> (analogous to <code>Collections</code>). The interface <code>Stack</code> provides just three methods: <code>empty</code>, <code>push</code>, and <code>pop</code>. The implementation class <code>ArrayStack</code> provides a single constructor with no arguments, and implements the methods <code>empty</code>, <code>push</code>, and <code>pop</code> using methods <code>size</code>, <code>add</code>, and <code>remove</code> on lists. The body of pop could be shorter—instead of assigning the value to the variable, it could be returned directly—but it will be interesting to see how the type of the variable changes as the code evolves. The utility class provides just one method, <code>reverse</code>, which repeatedly pops from one stack and pushes onto another.</p>
+
+<p>The client allocates a stack, pushes a few integers onto it, pops an integer off, and then reverses the remainder into a fresh stack. Since this is Java 1.4, integers must be explicitly boxed when passed to <code>push</code>, and explicitly unboxed when returned by <code>pop</code>.</p>
+</section>
+
+
+
+
+
+
+<section data-type="sect1" data-pdf-bookmark="Generic Library with Generic Client" id="generic_library_with_generic_client">
+<h1>Generic Library with Generic Client</h1>
+
+<p>Next, we update the library and client to use generics, as presented in <a data-type="xref" href="#generic_library_with_generic_clien-id001">Example 19-2</a>. This is <em>generic</em> code, written for Java 5 and its version of the Collections Framework. The interface now takes a type parameter, becoming <code>Stack&lt;E&gt;</code> (analogous to <code>List&lt;E&gt;</code>), and so does the implementing class, becoming <code>ArrayStack&lt;E&gt;</code> (analogous to <code>ArrayList&lt;E&gt;</code>), but no type parameter is added to the utility class <code>Stacks</code> (analogous to <code>Collections</code>). The type <code>Object</code> in the signatures and bodies of <code>push</code> and <code>pop</code> is replaced by the type parameter <code>E</code>. Note that the constructor in <code>ArrayStack</code> does not require a type parameter. In the utility class, the <code>reverse</code> method becomes a generic method with argument and result of type <code>Stack&lt;T&gt;</code>. Appropriate type parameters are added to the client, and boxing and unboxing are now implicit.</p>
+
+<p>In short, the conversion process is straightforward: just add a few type parameters and replace occurrences of <code>Object</code> by the appropriate type variable. All differences between the legacy and generic versions can be spotted by comparing the highlighted portions of the two examples. The implementation of generics is designed so that the two versions generate essentially equivalent class files. Some auxiliary information about the types may differ, but the actual bytecodes to be executed will be identical. Hence, executing the legacy and generic versions yields the same results. The fact that legacy and generic sources yield identical class files eases the process of evolution, as we discuss next.</p>
+<div id="legacy_library_with_legacy_client-id001" data-type="example">
+<h5>Legacy library with legacy client</h5>
+
+<pre data-type="programlisting">l/Stack.java:
+  interface Stack {
+    public boolean empty();
+    public void push(Object elt);
+    public Object pop();
+  }
+
+l/ArrayStack.java:
+  import java.util.*;
+  class ArrayStack implements Stack {
+    private List list;
+    public ArrayStack() { list = new ArrayList(); }
+    public boolean empty() { return list.size() == 0; }
+    public void push(Object elt) { list.add(elt); }
+    public Object pop() {
+      Object elt = list.remove(list.size()-1);
+      return elt;
+    }
+    public String toString() { return "stack"+list.toString(); }
+  }
+
+l/Stacks.java:
+  class Stacks {
+    public static Stack reverse(Stack in) {
+      Stack out = new ArrayStack();
+      while (!in.empty()) {
+        Object elt = in.pop();
+        out.push(elt);
+      }
+      return out;
+    }
+  }
+
+l/Client.java:
+  class Client {
+     public static void main(String[] args) {
+       Stack stack = new ArrayStack();
+       for (int i = 0; i&lt;4; i++) stack.push(new Integer(i));
+       assert stack.toString().equals("stack[0, 1, 2, 3]");
+       int top = ((Integer)stack.pop()).intValue();
+       assert top == 3 &amp;&amp; stack.toString().equals("stack[0, 1, 2]");
+       Stack reverse = Stacks.reverse(stack);
+       assert stack.empty();
+       assert reverse.toString().equals("stack[2, 1, 0]");
+   }
+}</pre></div>
+</section>
+
+
+
+
+
+
+<section data-type="sect1" data-pdf-bookmark="Generic Library with Legacy Client" id="generic_library_with_legacy_client">
+<h1>Generic Library with Legacy Client</h1>
+
+<p>Now let’s consider the case where the library is updated to generics while the client remains in its legacy version. This may occur because there is not enough time to convert everything all at once, or because the library and client are controlled by different organizations. This corresponds to the most important case of backward compatibility, where the generic Collections Framework of Java 5 must still work with legacy clients written against the Collections Framework in Java 1.4.</p>
+
+<p>In order to support evolution, whenever a parameterized type is defined, Java also recognizes the corresponding unparameterized version of the type, called a <em>raw type</em>. For instance, the parameterized type <code>Stack&lt;E&gt;</code> corresponds to the raw type <code>Stack</code>, and the parameterized type <code>ArrayStack&lt;E&gt;</code> corresponds to the raw type <code>ArrayStack</code>.</p>
+
+<p>Every parameterized type is a subtype of the corresponding raw type, so a value of the parameterized type can be passed where a raw type is expected. Usually, it is an error to pass a value of a supertype where a value of its subtype is expected, but Java does permit a value of a raw type to be passed where a parameterized type is expected—however, it flags this circumstance by generating an <em>unchecked conversion</em> warning. For instance, you can assign a value of type <code>Stack&lt;E&gt;</code> to a variable of type <code>Stack</code>, since the former is a subtype of the latter. You can also assign a value of type <code>Stack</code> to a variable of type <code>Stack&lt;E&gt;</code>, but this will generate an unchecked conversion warning.</p>
+
+<p>To be specific, consider compiling the generic source for <code>Stack&lt;E&gt;</code>, <code>ArrayStack&lt;E&gt;</code>, and <code>Stacks</code> from <a data-type="xref" href="#generic_library_with_generic_clien-id001">Example 19-2</a> (say, in directory <code>g</code>) with the legacy source for <code>Client</code> from <a data-type="xref" href="#legacy_library_with_legacy_client-id001">Example 19-1</a> (say, in directory <code>l</code>). Sun’s Java 5 compiler yields the following message:</p>
+
+<pre data-type="programlisting">% javac g/Stack.java g/ArrayStack.java g/Stacks.java l/Client.java
+Note: Client.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.</pre>
+
+<p>The unchecked warning indicates that the compiler cannot offer the same safety guarantees that are possible when generics are used uniformly throughout. However, when the generic code is generated by updating legacy code, we know that equivalent class files are produced from both, and hence (despite the unchecked warning) running a legacy client with the generic library will yield the same result as running the legacy client with the legacy library. Here we assume that the only change in updating the library was to introduce generics, and that no change to the behavior was introduced, either on purpose or by mistake.</p>
+<div id="generic_library_with_generic_clien-id001" data-type="example">
+<h5>Generic library with generic client</h5>
+
+<pre data-type="programlisting">g/Stack.java:
+  interface Stack&lt;E&gt; {
+    public boolean empty();
+    public void push(E elt);
+    public E pop();
+  }
+
+g/ArrayStack.java:
+  import java.util.*;
+  class ArrayStack&lt;E&gt; implements Stack&lt;E&gt; {
+    private List&lt;E&gt; list;
+    public ArrayStack() { list = new ArrayList&lt;E&gt;(); }
+    public boolean empty() { return list.size() == 0; }
+    public void push(E elt) { list.add(elt); }
+    public E pop() {
+      E elt = list.remove(list.size()-1);
+      return elt;
+    }
+    public String toString() { return "stack"+list.toString(); }
+  }
+
+g/Stacks.java:
+  class Stacks {
+    public static &lt;T&gt; Stack&lt;T&gt; reverse(Stack&lt;T&gt; in) {
+      Stack&lt;T&gt; out = new ArrayStack&lt;T&gt;();
+      while (!in.empty()) {
+        T elt = in.pop();
+        out.push(elt);
+      }
+      return out;
+    }
+  }
+
+g/Client.java:
+  class Client {
+    public static void main(String[] args) {
+      Stack&lt;Integer&gt; stack = new ArrayStack&lt;Integer&gt;();
+      for (int i = 0; i&lt;4; i++) stack.push(i);
+      assert stack.toString().equals("stack[0, 1, 2, 3]");
+      int top = stack.pop();
+      assert top == 3 &amp;&amp; stack.toString().equals("stack[0, 1, 2]");
+      Stack&lt;Integer&gt; reverse = Stacks.reverse(stack);
+      assert stack.empty();
+      assert reverse.toString().equals("stack[2, 1, 0]");
+    }
+  }</pre></div>
+
+<p>If we follow the suggestion above and rerun the compiler with the appropriate switch enabled, we get more details:</p>
+<pre id="I_programlisting5_d1e7862" data-type="programlisting">% javac -Xlint:unchecked g/Stack.java g/ArrayStack.java \
+%    g/Stacks.java l/Client.java
+l/Client.java:4: warning: [unchecked] unchecked call
+to push(E) as a member of the raw type Stack
+      for (int i = 0; i&lt;4; i++) stack.push(new Integer(i));
+                                          ^
+l/Client.java:8: warning: [unchecked] unchecked conversion
+found   : Stack
+required: Stack&lt;E&gt;
+      Stack reverse = Stacks.reverse(stack);
+                                     ^
+l/Client.java:8: warning: [unchecked] unchecked method invocation:
+&lt;E&gt;reverse(Stack&lt;E&gt;) in Stacks is applied to (Stack)
+      Stack reverse = Stacks.reverse(stack);
+                                    ^
+3 warnings</pre>
+
+<p>Not every use of a raw type gives rise to a warning. Because every parameterized type is a subtype of the corresponding raw type, but not conversely, passing a parameterized type where a raw type is expected is safe (hence, no warning for getting the result from <code>reverse</code>), but passing a raw type where a parameterized type is expected issues a warning (hence, the warning when passing an argument to <code>reverse</code>); this is an instance of the Substitution Principle. When we invoke a method on a receiver of a raw type, the method is treated as if the type parameter is a wildcard, so getting a value from a raw type is safe (hence, no warning for the invocation of <code>pop</code>), but putting a value into a raw type issues a warning (hence, the warning for the invocation of <code>push</code>); this is an instance of the Get and Put Principle.</p>
+
+<p>Even if you have not written any generic code, you may still have an evolution problem because others have generified their code. This will affect everyone with legacy code that uses the Collections Framework, which has been generified by Sun. So the most important case of using generic libraries with legacy clients is that of using the Java 5 Collections Framework with legacy code written for the Java 1.4 Collections Framework.</p>
+
+<p>In particular, applying the Java 5 compiler to the legacy code in <a data-type="xref" href="#legacy_library_with_legacy_client-id001">Example 19-1</a> also issues unchecked warnings, because of the uses of the generified class <code>ArrayList</code> from the legacy class <code>ArrayStack</code>. Here is what happens when we compile legacy versions of all the files with the Java 5 compiler and libraries:</p>
+
+<pre data-type="programlisting">% javac -Xlint:unchecked l/Stack.java l/ArrayStack.java \
+%    l/Stacks.java l/Client.java
+l/ArrayStack.java:6: warning: [unchecked] unchecked call to add(E)
+as a member of the raw type java.util.List
+    public void push(Object elt) list.add(elt);
+                                          ^
+1 warning</pre>
+
+<p>Here the warning for the use of the generic method add in the legacy method <code>push</code> is issued for reasons similar to those for issuing the previous warning for use of the generic method <code>push</code> from the legacy client.</p>
+
+<p>It is poor practice to configure the compiler to repeatedly issue warnings that you intend to ignore. It is distracting and, worse, it may lead you to ignore warnings that require attention—just as in the fable of the little boy who cried wolf. In the case of pure legacy code, such warnings can be turned off by using the <code>-source 1.4</code> switch:</p>
+<pre id="I_programlisting5_d1e7952" data-type="programlisting">% javac -source 1.4 l/Stack.java l/ArrayStack.java \
+%    l/Stacks.java l/Client.java</pre>
+
+<p>This compiles the legacy code and issues no warnings or errors. This method of turning off warnings is only applicable to true legacy code, with none of the features introduced in Java 5, generic or otherwise. One can also turn off unchecked warnings by using annotations, as described in the next section, and this works even with features introduced in Java 5.</p>
+</section>
+
+
+
+
+
+
+<section data-type="sect1" data-pdf-bookmark="Legacy Library with Generic Client" id="legacy_library_with_generic_client">
+<h1>Legacy Library with Generic Client</h1>
+
+<p>It usually makes sense to update the library before the client, but there may be cases when you wish to do it the other way around. For instance, you may be responsible for maintaining the client but not the library; or the library may be large, so you may want to update it gradually rather than all at once; or you may have class files for the library, but no source.</p>
+
+<p>In such cases, it makes sense to update the library to use parameterized types in its method signatures, but not to change the method bodies. There are three ways to do this: by making minimal changes to the source, by creating stub files, or by use of wrappers.We recommend use of minimal changes when you have access to source and use of stubs when you have access only to class files, and we recommend against use of wrappers.</p>
+
+
+
+
+
+
+
+
+<section data-type="sect2" data-pdf-bookmark="Evolving a Library using Minimal Changes" id="evolving_a_library_using_minimal_changes">
+<h2>Evolving a Library using Minimal Changes</h2>
+
+<p>The minimal changes technique is shown in <a data-type="xref" href="#evolving_a_library_using_minimal_c-id001">Example 19-3</a>. Here the source of the library has been edited, but only to change method signatures, not method bodies. The exact changes required are highlighed in boldface. This is the recommended technique for evolving a library to be generic when you have access to the source.</p>
+
+<p>To be precise, the changes required are:</p>
+
+<ul>
+<li>
+<p>Adding type parameters to interface or class declarations as appropriate (for interface <code>Stack&lt;E&gt;</code> and class <code>ArrayStack&lt;E&gt;</code>)</p>
+</li>
+<li>
+<p>Adding type parameters to any newly parameterized interface or class in an extends or implements clause (for <code>Stack&lt;E&gt;</code> in the implements clause of <code>ArrayStack&lt;E&gt;</code>),</p>
+</li>
+<li>
+<p>Adding type parameters to each method signature as appropriate (for <code>push</code> and <code>pop</code> in <code>Stack&lt;E&gt;</code> and <code>ArrayStack&lt;E&gt;</code>, and for <code>reverse</code> in <code>Stacks</code>)</p>
+</li>
+<li>
+<p>Adding an unchecked cast to each return where the return type contains a type parameter (for <code>pop</code> in <code>ArrayStack&lt;E&gt;</code>, where the return type is <code>E</code>)—without this cast, you will get an error rather than an unchecked warning</p>
+</li>
+<li>
+<p>Optionally adding annotations to suppress unchecked warnings (for <code>ArrayStack&lt;E&gt;</code> and <code>Stacks</code>)</p>
+</li>
+</ul>
+
+<p>It is worth noting a few changes that we do <em>not</em> need to make. In method bodies, we can leave occurrences of <code>Object</code> as they stand (see the first line of <code>pop</code> in <code>ArrayStack</code>), and we do not need to add type parameters to any occurrences of raw types (see the first line of <code>reverse</code> in <code>Stacks</code>). Also, we need to add a cast to a return clause only when the return type is a type parameter (as in <code>pop</code>) but not when the return type is a parameterized type (as in <code>reverse</code>).</p>
+
+<p>With these changes, the library will compile successfully, although it will issue a number of unchecked warnings. Following best practice, we have commented the code to indicate which lines trigger such warnings:</p>
+
+<pre data-type="programlisting">% javac -Xlint:unchecked m/Stack.java m/ArrayStack.java m/Stacks.java
+m/ArrayStack.java:7: warning: [unchecked] unchecked call to add(E)
+as a member of the raw type java.util.List
+    public void push(E elt)  list.add(elt);   // unchecked call
+                                      ^
+m/ArrayStack.java:10: warning: [unchecked] unchecked cast
+found   : java.lang.Object
+required: E
+      return (E)elt;  // unchecked cast
+                ^
+m/Stacks.java:7: warning: [unchecked] unchecked call to push(T)
+as a member of the raw type Stack
+        out.push(elt);  // unchecked call
+                ^
+m/Stacks.java:9: warning: [unchecked] unchecked conversion
+found   : Stack
+required: Stack&lt;T&gt;
+      return out;  // unchecked conversion
+             ^
+4 warnings</pre>
+
+<p>To indicate that we expect unchecked warnings when compiling the library classes, the source has been annotated to suppress such warnings.</p>
+<pre id="I_programlisting5_d1e8165" data-type="programlisting">@SuppressWarnings("unchecked");</pre>
+
+<p>(The suppress warnings annotation does not work in early versions of Sun’s compiler for Java 5.) This prevents the compiler from crying wolf—we’ve told it not to issue unchecked warnings that we expect, so it will be easy to spot any that we <em>don’t</em> expect. In particular, once we’ve updated the library, we should not see any unchecked warnings from the client. Note as well that we’ve suppressed warnings on the library classes, but <em>not</em> on the client.</p>
+<div id="evolving_a_library_using_minimal_c-id001" data-type="example">
+<h5>Evolving a library using minimal changes</h5>
+
+<pre data-type="programlisting">m/Stack.java:
+  interface Stack&lt;E&gt; {
+    public boolean empty();
+    public void push(E elt);
+    public E pop();
+  }
+
+m/ArrayStack.java:
+  @SuppressWarnings("unchecked")
+  class ArrayStack&lt;E&gt; implements Stack&lt;E&gt; {
+    private List list;
+    public ArrayStack() { list = new ArrayList(); }
+    public boolean empty() { return list.size() == 0; }
+    public void push(E elt) { list.add(elt); }  // unchecked call
+    public E pop() {
+      Object elt = list.remove(list.size()-1);
+      return (E)elt;  // unchecked cast
+    }
+    public String toString() { return "stack"+list.toString(); }
+  }
+
+m/Stacks.java:
+  @SuppressWarnings("unchecked")
+  class Stacks {
+    public static &lt;T&gt; Stack&lt;T&gt; reverse(Stack&lt;T&gt; in) {
+      Stack out = new ArrayStack();
+      while (!in.empty()) {
+        Object elt = in.pop();
+        out.push(elt);  // unchecked call
+      }
+      return out;  // unchecked conversion
+    }
+  }</pre></div>
+
+<p>The only way to eliminate (as opposed to suppress) the unchecked warnings generated by compiling the library is to update the entire library source to use generics. This is entirely reasonable, as unless the entire source is updated there is no way the compiler can check that the declared generic types are correct. Indeed, unchecked warnings are warnings—rather than errors—largely because they support the use of this technique. Use this technique only if you are sure that the generic signatures are in fact correct. The best practice is to use this technique only as an intermediate step in evolving code to use generics throughout.</p>
+<div id="evolving_a_library_using_stubs" data-type="example">
+<h5>Evolving a library using stubs</h5>
+
+<pre data-type="programlisting">s/Stack.java:
+  interface Stack&lt;E&gt; {
+    public boolean empty();
+    public void push(E elt);
+    public E pop();
+  }
+
+s/StubExceptionStubException.java:
+  class exceptionStubExceptionStubException extends UnsupportedOperationExceptionUnsupportedOperationException {}
+
+s/ArrayStack.java:
+  class ArrayStack&lt;E&gt; implements Stack&lt;E&gt; {
+    public boolean empty() { throw new StubException(); }
+    public void push(E elt) { throw new StubException(); }
+    public E pop() { throw new StubException(); }
+    public String toString() { throw new StubException(); }
+  }
+
+s/Stacks.java:
+  class Stacks {
+    public static &lt;T&gt; Stack&lt;T&gt; reverse(Stack&lt;T&gt; in) {
+      throw new StubException();
+    }
+  }</pre></div>
+</section>
+
+
+
+
+
+
+
+
+<section data-type="sect2" data-pdf-bookmark="Evolving a Library using Stubs" id="evolving_a_library_using_stubs-id001">
+<h2>Evolving a Library using Stubs</h2>
+
+<p>The stubs technique is shown in <a data-type="xref" href="#evolving_a_library_using_stubs">Example 19-4</a>. Here we write stubs with generic signatures but no bodies.We compile the generic client against the generic signatures, but run the code against the legacy class files. This technique is appropriate when the source is not released, or when others are responsible for maintaining the source.</p>
+
+<p>To be precise, we introduce the same modifications to interface and class declarations and method signatures as with the minimal changes technique, except we completely delete all executable code, replacing each method body with code that throws a <code>StubException</code> (a new exception that extends <code>UnsupportedOperationException</code>).</p>
+
+<p>When we compile the generic client, we do so against the class files generated from the stub code, which contain appropriate generic signatures (say, in directory <code>s</code>). When we run the client, we do so against the original legacy class files (say, in directory <code>l</code>).</p>
+
+<pre data-type="programlisting">% javac -classpath s g/Client.java
+% java -ea -classpath l g/Client</pre>
+
+<p>Again, this works because the class files generated for legacy and generic files are essentially identical, save for auxiliary information about the types. In particular, the generic signatures that the client is compiled against match the legacy signatures (apart from auxiliary information about type parameters), so the code runs successfully and gives the same answer as previously.</p>
+</section>
+
+
+
+
+
+
+
+
+<section data-type="sect2" data-pdf-bookmark="Evolving a Library using Wrappers" id="evolving_a_library_using_wrappers">
+<h2>Evolving a Library using Wrappers</h2>
+
+<p>The wrappers technique is shown in <a data-type="xref" href="#evolving_a_library_using_wrappers-id001">Example 19-5</a>. Here we leave the legacy source and class files unchanged, and provide a generic wrapper class that accesses the legacy class via delegation.We present this technique mainly in order to warn you <em>against</em> its use—it is usually better to use minimal changes or stubs.</p>
+
+<p>This techique creates a parallel hierarchy of generic interfaces and wrapper classes. To be precise, we create a new interface <code>GenericStack</code> corresponding to the legacy interface <code>Stack</code>, we create a new class <code>GenericWrapperClass</code> to access the legacy implementation <code>ArrayStack</code>, and we create a new class <code>GenericStacks</code> corresponding to the legacy convenience class <code>Stacks</code>.</p>
+
+<p>The generic interface <code>GenericStack</code> is derived from the legacy interface <code>Stack</code> by the same method used in the previous sections to update the signatures to use generics. In addition, a new method <code>unwrap</code> is added, that extracts the legacy implementation from a wrapper.</p>
+
+<p>The wrapper class <code>GenericStackWrapper&lt;E&gt;</code> implements <code>GenericStack&lt;E&gt;</code> by delegation to a <code>Stack</code>. The constructor takes an instance that implements the legacy interface <code>Stack</code>, which is stored in a private field, and the <code>unwrap</code> method returns this instance. Because delegation is used, any updates made to the underlying legacy stack will be seen through the generic stack view offered by the wrapper.</p>
+
+<p>The wrapper implements each method in the interface (<code>empty</code>, <code>push</code>, <code>pop</code>) by a call to the corresponding legacy method; and it implements each method in <code>Object</code> that is overridden in the legacy class (<code>toString</code>) similarly. As with minimal changes, we add an unchecked cast to the return statement when the return type contains a type parameter (as in <code>pop</code>); without this cast you will get an error rather than an unchecked warning.</p>
+
+<p>A single wrapper will suffice for multiple implementations of the same interface. For instance, if we had both <code>ArrayStack</code> and <code>LinkedStack</code> implementations of <code>Stack</code>, we could use <code>GenericStackWrapper&lt;E&gt;</code> for both.</p>
+
+<p>The new convenience class <code>GenericStacks</code> is implemented by delegation to the legacy class <code>Stacks</code>. The generic <code>reverse</code> method unwraps its argument, calls the legacy <code>reverse</code> method, and wraps its result.</p>
+
+<p>Required changes to the client in <a data-type="xref" href="#evolving_a_library_using_wrappers-id001">Example 19-5</a> are shown in boldface.</p>
+
+<p>Wrappers have a number of disadvantages compared to minimal changes or stubs. Wrappers require maintaining two parallel hierarchies, one of legacy interfaces and classes and one of generic interfaces and classes. Conversion by wrapping and unwrapping between these can become tedious. If and when the legacy classes are generified properly, further work will be required to remove the redundant wrappers.</p>
+<div id="evolving_a_library_using_wrappers-id001" data-type="example">
+<h5>Evolving a library using wrappers</h5>
+
+<pre data-type="programlisting">// Don't do this---use of wrappers is not recommended!
+
+l/Stack.java, l/Stacks.java, l/ArrayStack.java:
+  // As in Example 5.1
+
+w/GenericStack.java:
+  interface GenericStack&lt;E&gt; {
+    public Stack unwrap();
+    public boolean empty();
+    public void push(E elt);
+    public E pop();
+  }
+
+w/GenericStackWrapper.java:
+  @SuppressWarnings("unchecked")
+  class GenericStackWrapper&lt;E&gt; implements GenericStack&lt;E&gt; {
+    private Stack stack;
+    public GenericStackWrapper(Stack stack) { this.stack = stack; }
+    public Stack unwrap() { return stack; }
+    public boolean empty() { return stack.empty(); }
+    public void push(E elt) { stack.push(elt); }
+    public E pop() { return (E)stack.pop(); }  // unchecked cast
+    public String toString() { return stack.toString(); }
+  }
+
+w/GenericStacks.java:
+  class GenericStacks {
+    public static &lt;T&gt; GenericStack&lt;T&gt; reverse(GenericStack&lt;T&gt; in) {
+      Stack rawIn = in.unwrap();
+      Stack rawOut = Stacks.reverse(rawIn);
+      return new GenericStackWrapper&lt;T&gt;(rawOut);
+    }
+  }
+
+w/Client.java:
+  class Client {
+    public static void main(String[] args) {
+      GenericStack&lt;Integer&gt; stack
+        = new GenericStackWrapper&lt;Integer&gt;(new ArrayStack());
+      for (int i = 0; i&lt;4; i++) stack.push(i);
+      assert stack.toString().equals("stack[0, 1, 2, 3]");
+      int top = stack.pop();
+      assert top == 3 &amp;&amp; stack.toString().equals("stack[0, 1, 2]");
+      GenericStack&lt;Integer&gt; reverse = GenericStacks.reverse(stack);
+      assert stack.empty();
+      assert reverse.toString().equals("stack[2, 1, 0]");
+    }
+  }</pre></div>
+
+<p>Wrappers also present deeper and subtler problems. If the code uses object identity, problems may appear because the legacy object and the wrapped object are distinct. Further, complex structures will require multiple layers of wrappers. Imagine applying this technique to a stack of stacks! You would need to define a two-level wrapper, that wraps or unwraps each second-level stack as it is pushed onto or popped from the top-level stack. Because wrapped and legacy objects are distinct, it may be hard or even impossible to always ensure that the wrapped objects view all changes to the legacy objects.</p>
+
+<p>The design of Java generics, by ensuring that legacy objects and generic objects are the same, avoids all of these problems with wrappers. The design of generics for C# is very different: legacy classes and generic classes are completely distinct, and any attempt to combine legacy collections and generic collections will bump into the difficulties with wrappers discussed here.</p>
+</section>
+</section>
+
+
+
+
+
+
+<section data-type="sect1" data-pdf-bookmark="Conclusions" id="conclusions">
+<h1>Conclusions</h1>
+
+<p>To review, we have seen both generic and legacy versions of a library and client. These generate equivalent class files, which greatly eases evolution. You can use a generic library with a legacy client, or a legacy library with a generic client. In the latter case, you can update the legacy library with generic method signatures, either by minimal changes to the source or by use of stub files.</p>
+
+<p>The foundation stone that supports all this is the decision to implement generics by erasure, so that generic code generates essentially the same class files as legacy code—a property referred to as binary compatibility. Usually, adding generics in a natural way causes the legacy and generic versions to be binary compatible. However, there are some corner cases where caution is required; these are discussed in <a data-type="xref" href="#maintain_binary_compatibility">???</a>.</p>
+
+<p>It is interesting to compare the design of generics in Java and in C#. In Java, generic types do not carry information about type parameters at run time, whereas arrays do contain information about the array element type at run time. In C#, both generic types and arrays contain information about parameter and element types at run time. Each approach has advantages and disadvantages. In the next chapter, we will discuss problems with casting and arrays that arise because Java does not reify information about type parameters, and these problems do not arise in C#. On the other hand, evolution in C# is much more difficult. Legacy and generic collection classes are completely distinct, and any attempt to combine legacy collections and generic collections will encounter the difficulties with wrappers discussed earlier. In contrast, as we’ve seen, evolution in Java is straightforward.</p>
+</section>
+</section></body></html>

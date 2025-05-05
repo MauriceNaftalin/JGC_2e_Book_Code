@@ -54,7 +54,7 @@ public class DailyTaskSchedulerWithAccessor {
     List<PriorityTask> tasksForDay(int day) {
         return schedule.get(day).getTaskList();
     }
-
+    // tiny demonstration
     public static void main(String[] args) {
         PriorityTask guiCoding = new PriorityTask(new CodingTask("gui"), Priority.MEDIUM);
         PriorityTask logicCoding = new PriorityTask(new CodingTask("logic"), Priority.HIGH);
